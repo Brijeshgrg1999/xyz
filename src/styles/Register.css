@@ -1,0 +1,35 @@
+
+.registerContainer{
+    margin: auto;
+    width: 1440px  ;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 3.5rem;
+
+   
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form > input{
+    min-width: 300px;
+    border-radius: 2.5rem;
+    height: 40px;
+    background-color: rgb(245, 211, 162);
+}
+
+.form > button{
+    background-color: black;
+    border-radius: 2.5rem;
+    height: 40px;
+    color: white;
+}
+
+form > input {
+    padding: 1.5em;
+}

@@ -1,0 +1,10 @@
+.nowShowingContainer{ 
+
+}
+
+@media only screen and (max-width : 480px ) {
+    .nowShowingContainer{
+        display: flex; 
+        flex-direction: column;
+    }
+}

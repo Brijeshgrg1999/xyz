@@ -1,0 +1,366 @@
+{% extends "V3/main_site/layout/_master_layout_fullwidth" %}
+{% set cityAsia = craft.categories().slug('asia').one() %}
+{% set cityname = "Asia" %}
+
+{% set currentSiteBaseUrl = craft.app.sites.getSiteByHandle("business").baseUrl %}
+
+{% block additional_header %}
+  {% minify %}		
+	<script type="text/javascript">
+	  if('{{currentSite.handle}}' == 'default'){
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function() {
+		  var result = this.responseText;
+		  if(sessionStorage.getItem("geo") != "true" ){
+			if(result == 'PH'){
+			  window.location.href = '/manila';
+			}
+			else if(result == 'HK'){
+			  window.location.href = '/hong-kong';
+			}
+			else if(result == 'TH'){
+			  window.location.href = '/bangkok';
+			}
+			else if(result == 'SG'){
+			  window.location.href = '/singapore';
+			}
+			else if(result == 'MY'){
+			  window.location.href = '/kuala-lumpur';
+			}
+			else if(result == 'MO'){
+			  window.location.href = '/macau';
+			}
+		  }
+		}
+		xhttp.open("GET", "/geolocation.php");
+		xhttp.send();
+	  }
+	</script>
+
+	<link rel="stylesheet" href="/assets/V3/thebeat/css/home.css?v=3.2">
+	<link rel="stylesheet" href="/assets/V3/thebeat/css/home_new.css?v=1.65">
+	{{ entry.additionalHeader|raw }}
+
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-XFJSJ6EHFK"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      
+	  gtag('js', new Date());
+      gtag('config', 'G-XFJSJ6EHFK');
+    </script>
+  {% endminify %}
+{% endblock %}
+
+{# ---------------- BLOCK ----------------- #}
+{% block content %}
+<h1 class="d-none m-0 p-0">{{entry.seoTitle}}</h1>
+<div class="screen-side-banner-ad" style=";">
+  <div class="container-fluid p-0">
+	{# MODALS #}
+	{# Bookmark Form #}
+	{% include '/V3/main_site/includes/layout_parts/modal_container' %}
+				
+	<div class="subscribe-btn-mobile">
+	  <div class="container">
+		<a target="_blank" href="/newsletters" target="_blank"><i class="fa-regular fa-envelope"></i> Subscribe</a>
+	  </div>
+	</div>
+
+	{# for mobile version for editor's pick #}
+	<section class='container d-lg-none d-block'>
+	  <div class="editor-pick-mobile">
+	  	{% include "/V4/main_site/ajax/onload/city/home_editor_pick_mobile" %}
+	  </div>
+	</section>		
+
+	<div class="page_content">
+		<div class="first-section">
+			{# desktop event #}
+
+			{# this week's events ajax #}
+{# {{ sprig('/V4/main_site/ajax/onload/general/this_week_event_asia', {'eventLimit':'5'}, {'s-trigger': 'load'}) }} #}
+{{ craft.blitz.includeDynamic('/V4/main_site/ajax/onload/general/this_week_event_asia', {'eventLimit': '5'}) }} 
+
+
+			
+			{# desktop editor picks #}
+			<section class="editors-pick order-md-2 d-lg-block d-none">
+				<div class="container">
+					{% include "/V4/main_site/ajax/onload/city/home_editor_pick" %}
+				</div>
+			</section>
+		</div>
+
+	  <section class="text-center my-5">
+	    <div class="v3-ads-desktop">
+		  <div class="center-text">
+			{{ ads.homepageAdBannerLeft|raw }}
+		  </div>
+		</div>
+				
+		<div class="v3-ads-mobile">
+		  <div class="tr-ad center-text">
+			{{ ads.mobileHomepageSecondLargeLeaderboard|raw }}
+		  </div>
+		</div>
+	  </section>
+
+	  <section class="asia-city-list">
+		<div class="container">
+			{% include "/V4/main_site/ajax/onload/general/cities_list" with {'cityname': cityname, 'categoryParent': null} %}
+		</div>
+	  </section>
+
+	  {# highlights - desktop #}
+	  <section class="city-highlights-container container">
+	    <div class="highlights-header">
+		  <h3><span>Highlights Across Asia</span></h3>
+		</div>
+		<div class="row my-4">
+		  <div class="col-12 d-lg-none d-block mb-5">
+		  	{% include "/V4/main_site/ajax/onload/city/highlights_mobile" %}
+		  </div>
+		  <div class="text-center">
+			<div class="v3-ads-mobile">
+			  <div class="tr-ad center-text">
+				{# blank #}
+			  </div>
+			</div>
+		  </div>
+		  <div class="col-lg-3 city-trending mb-lg-0 mb-5">
+			<div class="featured-articles-container-title d-flex">
+			  <div class="left-featured hk-sides"></div>
+
+			  <div class="center-featured">
+				<h3 class="text-center">TRENDING FOR YOU</h3>
+			  </div>
+
+			  <div class="right-featured hk-sides"></div>
+			</div>
+			{# {{ sprig("/V4/main_site/ajax/onload/city/trending_desktop", {'cityCategory': cityAsia.id}, {'s-trigger': 'load'}) }} #} 
+				{{ craft.blitz.includeDynamic('/V4/main_site/ajax/onload/city/trending_desktop', {
+				    'cityCategory': cityAsia.id ?? null
+				}) }}
+		  </div>
+		  <div class="col-lg-6 d-lg-block d-none">
+			{% include "/V4/main_site/ajax/onload/city/highlights_center_desktop" %}
+		  </div>
+		  <div class="col-lg-3 highlights-side d-lg-block d-none">
+			{% include "/V4/main_site/ajax/onload/city/highlights_right_desktop" %}
+
+			{# ad #}
+			<div class="text-center">
+			  <div class="v3-ads-desktop">
+				<div class="tr-ad center-text">
+				  {{ ads.homepageMedRect|raw }}
+				</div>
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </section>
+			
+	  {# newsletter form from formie #}
+	  {% include "/V4/main_site/ajax/onload/city/the_list_newsletter" %}
+
+	  {# ads #}
+	  <section class="text-center my-5">
+		<div class="v3-ads-desktop">
+		  <div class="center-text">
+			{{ ads.adsField7|raw }}
+		  </div>
+		</div>
+	  </section>
+
+	  {# featured events and deals desktop and mobile #}
+	  <section class="home-featured-events">
+		<div class="featured-events container">
+		  <div class="featured-events-headers" style="display:block">
+			<div class="featured-events-header-left">		
+			  <h3><span>Featured Events & Exclusive Deals</span></h3>
+			  <h4>Upcoming events across asia 
+				<span style=" float: right;">
+					<a target="_blank" href="{{currentSite.baseUrl}}the-list">View more<i class="fa-solid fa-arrow-right"></i></a>
+				</span>
+			  </h4>
+			</div>
+		  </div>
+
+		  <div class="feature-events-ajax">
+			
+		{#{{ sprig('/V4/main_site/ajax/onload/city/exclusive_events_asia', {'eventLimit':'5'}, {'s-trigger': 'load'}) }} #}
+		{{ craft.blitz.includeDynamic('/V4/main_site/ajax/onload/city/exclusive_events_asia', {'eventLimit':'5'}) }}  
+		  </div>
+		</div>
+	  </section>
+
+	{# recommended channel desktop #}
+	<section class="recommended-channels container my-5 d-none d-lg-block">
+	  <h3><span>Recommended Channels</span></h3>
+	  <h4>Latest articles across {{cityname}}</h4>
+	  {% include "/V4/main_site/ajax/onload/city/recommended_channel_desktop" with {'cityCategory': cityAsia.id, 'cityCategoryID':cityAsia.id} %}
+	</section>
+
+	{# ads #}
+	<section class="text-center my-5">
+	  <div class="v3-ads-desktop">
+		<div class="center-text">
+		  {{ ads.adsField8|raw }}
+		</div>
+	  </div>
+	  <div class="v3-ads-mobile">
+		<div class="tr-ad center-text">
+		  {{ ads.adsMobile1|raw }}
+		</div>
+	  </div>
+	</section>
+
+	{# recommended channel mobile #}
+	<section class="recommended-channels container my-5 d-block d-lg-none">
+	  <h3><span>Recommended Channels</span></h3>
+	  <h4>Latest articles across {{cityname}}</h4>
+	  {% include "/V4/main_site/ajax/onload/city/recommended_channel_mobile" with {'cityCategory': cityAsia.id, 'cityCategoryID':cityAsia.id} %}
+	</section>
+
+	<section class="container my-5">
+	  <div class="row">
+		<div class="col-xl-3 d-xl-block d-none home-feed-social mt-4">
+		  <div class="home-feed-socials">
+			{% include "/V4/main_site/ajax/onload/general/social_media_widget" with {'cityname': cityname} %}
+		  </div>
+		</div>
+		<div class="col-xl-6 col-md-7 order-xl-1 order-md-1 order-2 home_recent_mobile">
+		  <div class="home_recent mt-md-n4 mt-5"> 
+			{#{{ sprig('/V3/main_site/ajax/onload/home/home_recent_asia', {}, {'s-trigger': 'revealed'}) }}#}
+
+			{#{{ sprig("/V4/main_site/ajax/onload/general/recent_articles", {}, {'s-trigger': 'load'}) }} #}
+		 {{ craft.blitz.includeDynamic("/V4/main_site/ajax/onload/general/recent_articles", {}) }}   
+		  </div>
+		</div>
+		<div class="col-xl-3 col-md-5 order-xl-2 order-1 order-md-2 home-feed-topic mt-4">
+		  <div class="home-feed-topics">
+			{% include '/V4/main_site/ajax/onload/general/channel_topics' with {'cityCategory': cityAsia.id, 'categoryParent': null} %}
+		  </div>
+
+		  {# ad #}
+		  <div class="text-center">
+			<div class="v3-ads-desktop">
+			  <div class="tr-ad center-text">
+				{{ ads.adsDesktop2|raw }}
+			  </div>
+			</div>
+
+			<div class="v3-ads-mobile">
+			  <div class="tr-ad center-text">
+				{# blank #}
+			  </div>
+			</div>
+		  </div>
+
+		  <div class="home-feed-socials d-xl-none d-md-block">
+			{% include "/V4/main_site/ajax/onload/general/social_media_widget" with {'cityname': cityname} %}
+		  </div>
+		</div>
+	  </div>
+	</section>
+
+	{# newsletter form from formie #}
+	{% include "/V4/main_site/ajax/onload/city/general_newsletter" %}
+  </div> {# page_content #}
+
+	</div> {# d-flex #}
+</div> {# screen-side-banner-ad#}
+{% endblock %}
+{# ---------------- BLOCK ----------------- #}
+
+{% block additional_footer %}
+  <script>
+	$('.viewMore').on('click', function() {
+	  var hiddenChannels = $('.recommended-channel.hidden');
+	  hiddenChannels.removeClass('hidden');
+	  $(this).remove();
+	});
+
+	$('.recommended-channels-slider').not('.slick-initialized').slick({
+	  dots: false,
+	  infinite: false,
+	  speed: 700,
+	  arrows: false,
+	  autoplay:false,
+	  slidesToShow: 4,
+	  slidesToScroll: 1,
+	  swipeToSlide: true,
+	  responsive: [
+	  {
+		breakpoint: 992,
+		settings: {
+		  slidesToShow: 3,
+		  arrows: false
+		},
+	  }]
+	});
+
+	//ajax for recent events
+	/*
+	$.ajax ({
+	  type: "get",
+	  url: "{{currentSiteBaseUrl}}all-events-ajax",
+	  data: "a",
+	  cache:false,
+	  success:function(result){
+		$('.feature-events-ajax').html(result);
+	  }
+	});
+
+	//ajax for this week event
+	
+	$.ajax ({
+	  type: "get",
+	  url: "{{currentSiteBaseUrl}}all-thisweek-events-ajax",
+	  data: "a",
+	  cache:false,
+	  crossDomain: true,
+	  success:function(result){
+		$('.events-list').html(result);
+	  }
+	});
+	
+	
+	//ajax for this week event - Mobile
+	$.ajax ({
+	  type: "get",
+	  url: "{{currentSiteBaseUrl}}all-thisweek-events-mobile-ajax",
+	  data: "a",
+	  cache:false,
+	  success:function(result){
+		$('.this-week-events-mobile').html(result);
+	  }
+	});
+	*/
+  </script>
+
+
+  <script>
+    $('.recommended-channels-slider').not('.slick-initialized').slick({
+      dots: false,
+      infinite: false,
+      speed: 700,
+      arrows: false,
+      autoplay:false,
+      slidesToShow: 4,
+      slidesToScroll: 1,
+      swipeToSlide: true,
+      responsive: [
+        {
+          breakpoint: 992,
+          settings: {
+            slidesToShow: 3,
+            arrows: false
+          },
+        },
+      ]
+    });
+
+  </script>
+{% endblock %}

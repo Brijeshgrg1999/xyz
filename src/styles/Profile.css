@@ -1,0 +1,23 @@
+.profilePage{
+    width: 1280px;
+    margin: auto;
+}
+
+.profileContainer{
+    width: 100%;
+    background-color: grey;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.userWishlistContainer{
+    min-width: 500px ;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1.5em;
+
+}
